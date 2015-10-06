@@ -102,8 +102,12 @@ const RecorderComponent = React.createClass({
         'fa-stop': this.state.isRecording,
     });
 
+    var divStyle = {
+        marginTop: '25px',
+    };
+
     return (
-      <div>
+      <div className="well" style={divStyle}>
             <button className="btn btn-default" onClick={this._onClick}>
                 <i className={iconClasses}></i>
             </button>

@@ -19,7 +19,7 @@ const App = React.createClass({
 
   render() {
     return (
-      <div>
+      <div className="container">
 
         <Header />
 

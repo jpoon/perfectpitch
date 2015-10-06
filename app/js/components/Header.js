@@ -7,9 +7,13 @@ const Header = React.createClass({
   render() {
     return (
       <header>
-
-        Header
-
+      	<div className="navbar navbar-default">
+      		<div className="navbar-header">
+      			<a className="navbar-brand">
+      				PitchPerfect
+      			</a>
+	        </div>
+	    </div>
       </header>
     );
   }
