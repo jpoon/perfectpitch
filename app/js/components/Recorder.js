@@ -1,9 +1,11 @@
 'use strict';
 
-import ClassNames       from 'classnames';
-import React            from 'react/addons';
-import OxfordWebSocket  from '../utils/OxfordWebSocket';
-import Recorder         from '../utils/Recorder';
+import ClassNames               from 'classnames';
+import React                    from 'react/addons';
+import RecorderTranscript       from './RecorderTranscript';
+import WordFrequencyHistogram   from './WordFrequencyHistogram';
+import OxfordWebSocket          from '../utils/OxfordWebSocket';
+import Recorder                 from '../utils/Recorder';
 
 const RecorderComponent = React.createClass({
     getInitialState() {
@@ -56,8 +58,8 @@ const RecorderComponent = React.createClass({
                     function(ws) {
                         self.audioRecorder.sendHeader(ws);
                         self.audioRecorder.record(ws);
-                    }, 
-                    self._gotMessage, 
+                    },
+                    self._gotMessage,
                     self._stopRecording);
             },
             function (e) {
@@ -111,7 +113,9 @@ const RecorderComponent = React.createClass({
             <button className="btn btn-default" onClick={this._onClick}>
                 <i className={iconClasses}></i>
             </button>
-            <textarea className="form-control" value={message} disabled='true' rows="5"/>
+
+            <RecorderTranscript transcript={message} />
+            <WordFrequencyHistogram transcript={message} />
       </div>
     );
   }
