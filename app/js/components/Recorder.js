@@ -3,7 +3,7 @@
 import ClassNames               from 'classnames';
 import React                    from 'react/addons';
 import RecorderTranscript       from './RecorderTranscript';
-import WordFrequencyHistogram   from './WordFrequencyHistogram';
+import WordFrequencyGraph       from './WordFrequencyGraph';
 import OxfordWebSocket          from '../utils/OxfordWebSocket';
 import Recorder                 from '../utils/Recorder';
 
@@ -63,7 +63,8 @@ const RecorderComponent = React.createClass({
                     self._stopRecording);
             },
             function (e) {
-                window.alert('Microphone access was rejected.');
+              window.alert('Error: ' + e.name);
+              self.setState({ isRecording: false });
             }
         );
     },
@@ -86,7 +87,7 @@ const RecorderComponent = React.createClass({
     },
 
     _stopRecording() {
-        if (this.audioSource.active) {
+        if (this.audioSource && this.audioSource.active) {
             this.audioSource.getTracks().forEach(function(track) {
                 track.stop();
             });
@@ -115,7 +116,7 @@ const RecorderComponent = React.createClass({
             </button>
 
             <RecorderTranscript transcript={message} />
-            <WordFrequencyHistogram transcript={message} />
+            <WordFrequencyGraph transcript={message} />
       </div>
     );
   }
