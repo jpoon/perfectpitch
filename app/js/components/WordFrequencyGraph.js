@@ -4,6 +4,7 @@ import ClassNames       from 'classnames';
 import React            from 'react';
 import _                from 'lodash';
 import Chartist         from 'chartist';
+import createFragment  from 'react-addons-create-fragment';
 
 const WordFrequencyGraph = React.createClass({
   _getWordFrequency(sentence) {
@@ -32,12 +33,13 @@ const WordFrequencyGraph = React.createClass({
 
     var rows = wordFrequency.map(function(el) {
       return (
-        <p>{el.word} : {el.count}</p>
+        <p key={el.word}>{el.word} : {el.count}</p>
       );
     });
 
     return (
       <div>
+      {rows}
       </div>
 
     );
