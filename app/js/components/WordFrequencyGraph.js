@@ -1,8 +1,9 @@
 'use strict';
 
 import ClassNames       from 'classnames';
-import React            from 'react/addons';
+import React            from 'react';
 import _                from 'lodash';
+import Chartist         from 'chartist';
 
 const WordFrequencyGraph = React.createClass({
   _getWordFrequency(sentence) {
@@ -37,8 +38,8 @@ const WordFrequencyGraph = React.createClass({
 
     return (
       <div>
-        {{rows}}
       </div>
+
     );
   }
 

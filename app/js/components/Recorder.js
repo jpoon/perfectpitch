@@ -1,7 +1,7 @@
 'use strict';
 
 import ClassNames               from 'classnames';
-import React                    from 'react/addons';
+import React                    from 'react';
 import RecorderTranscript       from './RecorderTranscript';
 import WordFrequencyGraph       from './WordFrequencyGraph';
 import OxfordWebSocket          from '../utils/OxfordWebSocket';

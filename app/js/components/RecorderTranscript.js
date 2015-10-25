@@ -1,7 +1,7 @@
 'use strict';
 
 import ClassNames       from 'classnames';
-import React            from 'react/addons';
+import React            from 'react';
 
 const RecorderTranscriptComponent = React.createClass({
   render() {
