@@ -3,8 +3,8 @@
 import ClassNames       from 'classnames';
 import React            from 'react';
 import _                from 'lodash';
-import Chartist         from 'chartist';
-import createFragment  from 'react-addons-create-fragment';
+import Chartist         from 'react-chartist';
+import createFragment   from 'react-addons-create-fragment';
 
 const WordFrequencyGraph = React.createClass({
   _getWordFrequency(sentence) {
@@ -25,23 +25,34 @@ const WordFrequencyGraph = React.createClass({
       wordFrequency.push({ word: key, count: value});
     });
 
-    return _.sortBy(wordFrequency, "count").reverse();
+    return _.sortByOrder(wordFrequency, ['count', 'word'], ['asc', 'desc']);
   },
 
   render() {
     var wordFrequency = this._getWordFrequency(this.props.transcript);
 
-    var rows = wordFrequency.map(function(el) {
-      return (
-        <p key={el.word}>{el.word} : {el.count}</p>
-      );
-    });
+    console.log(wordFrequency);
+    var data = {
+      labels: _.pluck(wordFrequency, "word"),
+      series: [_.pluck(wordFrequency, "count")],
+    };
+
+    var options = {
+      horizontalBars: true,
+      axisX: {
+        labelInterpolationFnc: function(value) {
+          return value % 1 === 0 ? value : null;
+        }
+      },
+      axisY: {
+        showGrid: false,
+      }
+    };
 
     return (
       <div>
-      {rows}
+        <Chartist data={data} options={options} type='Bar' />
       </div>
-
     );
   }
 
