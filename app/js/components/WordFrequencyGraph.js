@@ -1,29 +1,32 @@
 'use strict';
 
-import ClassNames       from 'classnames';
-import React            from 'react';
-import _                from 'lodash';
-import {Bar as BarChart} from 'react-chartjs';
+import React              from 'react';
+import _                  from 'lodash';
+import ClassNames         from 'classnames';
+import {Bar as BarChart}  from 'react-chartjs';
 
 const WordFrequencyGraph = React.createClass({
+  minWordLength: 2,
+  maxRefreshInSec: 1,
+  numWordsToDisplay: 15,
 
   _getWordFrequency(sentence) {
+    var self = this;
+
     var wordFrequencyTmp = {};
     var words = _.words(sentence);
 
-    words.forEach(function(word) {
+    words.forEach(word => {
       word = word.trim().toLowerCase();
 
-      if (word.length > 2) {
-        wordFrequencyTmp[word] = wordFrequencyTmp[word] || 0;
+      if (word.length > self.minWordLength) {
+        wordFrequencyTmp[word] = (wordFrequencyTmp[word] || 0)
         wordFrequencyTmp[word]++;
       }
     });
 
     var wordFrequency = [];
-    _.forIn(wordFrequencyTmp, function(value, key) {
-      wordFrequency.push({ word: key, count: value});
-    });
+    _.forIn(wordFrequencyTmp, (value, key) => wordFrequency.push({ word: key, count: value}));
 
     return _.sortByOrder(wordFrequency, ['count', 'word'], ['desc', 'asc']);
   },
@@ -34,9 +37,7 @@ const WordFrequencyGraph = React.createClass({
 
   componentDidMount() {
     var self = this;
-    this.timer = setInterval(function() {
-      self.setState({shouldComponentUpdate: true})
-    }, 750);
+    this.timer = setInterval(() => self.setState({shouldComponentUpdate: true}), this.maxRefreshInSec * 1000);
   },
 
   componentWillUnmount() {
@@ -44,18 +45,16 @@ const WordFrequencyGraph = React.createClass({
   },
 
   shouldComponentUpdate(nextProps, nextState) {
-    var shouldComponentUpdate = false
-
-    if (nextProps.transcript != this.props.transcript) {
-      shouldComponentUpdate = this.state.shouldComponentUpdate;
+    if (this.state.shouldComponentUpdate && nextProps.transcript != this.props.transcript) {
       this.state.shouldComponentUpdate = false;
+      return true;
     }
 
-    return shouldComponentUpdate;
+    return false;;
   },
 
   render() {
-    var wordFrequency = this._getWordFrequency(this.props.transcript);
+    var wordFrequency = _.take(this._getWordFrequency(this.props.transcript), this.numWordsToDisplay);
 
     var chartData = {
       labels: _.pluck(wordFrequency, "word"),
@@ -79,7 +78,9 @@ const WordFrequencyGraph = React.createClass({
     return (
       <div>
         <h2>Word Frequency</h2>
-         <BarChart data={chartData} options={chartOptions} redraw />
+          { wordFrequency.length > 0 ?
+           <BarChart data={chartData} options={chartOptions} redraw /> : null
+          }
       </div>
     );
   }

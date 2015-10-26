@@ -4,6 +4,7 @@ import ClassNames               from 'classnames';
 import React                    from 'react';
 import RecorderTranscript       from './RecorderTranscript';
 import WordFrequencyGraph       from './WordFrequencyGraph';
+import TempoGraph               from './TempoGraph';
 import OxfordWebSocket          from '../utils/OxfordWebSocket';
 import Recorder                 from '../utils/Recorder';
 
@@ -22,6 +23,7 @@ const RecorderComponent = React.createClass({
         this.oxfordWebSocket = new OxfordWebSocket();
 
         this.messageHistory = '';
+
         return {
             isRecording: false,
             message: '',
@@ -32,7 +34,7 @@ const RecorderComponent = React.createClass({
         var self = this;
         this.setState({
             isRecording: !self.state.isRecording,
-        }, function() {
+        }, () => {
             if (self.state.isRecording) {
                 self._startRecording();
             } else {
@@ -48,21 +50,21 @@ const RecorderComponent = React.createClass({
 
         navigator.getUserMedia(
             {"audio": true},
-            function (stream) {
+            stream => {
                 var inputPoint = self.audioContext.createGain();
                 self.audioRecorder = new Recorder(inputPoint);
                 self.audioSource = stream;
 
                 self.audioContext.createMediaStreamSource(stream).connect(inputPoint);
                 self.oxfordWebSocket.open(
-                    function(ws) {
+                    ws => {
                         self.audioRecorder.sendHeader(ws);
                         self.audioRecorder.record(ws);
                     },
                     self._gotMessage,
                     self._stopRecording);
             },
-            function (e) {
+            e => {
               window.alert('Error: ' + e.name);
               self.setState({ isRecording: false });
             }
@@ -88,9 +90,7 @@ const RecorderComponent = React.createClass({
 
     _stopRecording() {
         if (this.audioSource && this.audioSource.active) {
-            this.audioSource.getTracks().forEach(function(track) {
-                track.stop();
-            });
+            this.audioSource.getTracks().forEach(track => track.stop());
         }
         this.audioRecorder.stop();
         this.oxfordWebSocket.close();
@@ -117,6 +117,7 @@ const RecorderComponent = React.createClass({
 
             <RecorderTranscript transcript={message} />
             <WordFrequencyGraph transcript={message} />
+            <TempoGraph transcript={message} />
       </div>
     );
   }
