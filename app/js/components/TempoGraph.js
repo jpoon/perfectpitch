@@ -9,6 +9,7 @@ const TempoGraph = React.createClass({
 
   getInitialState() {
     return {
+      windowTempo: [],
       wordCount: [],
       sampleRate: [],
       windowStartTime: new Date(),
@@ -31,27 +32,33 @@ const TempoGraph = React.createClass({
 
     var elapsedTimeInSec = Math.floor((new Date().getTime() - this.state.windowStartTime.getTime()) / 1000)
 
-    if (elapsedTimeInSec >= this.state.sampleWindowInSec ) {
-      var wordCnt = _.words(this.props.transcript).length;
-
-      var windowWordCnt = wordCnt - this.state.windowStartWordCount;
-
-      t
-      console.log(nextProps.transcript);
-      console.log(this.props.transcript);
-
-      this.setState({
-        windowStartTime: new Date(),
-        windowStartWordCount: _.words(nextProps.transcript).length,
-      });
-
+    if (elapsedTimeInSec < this.sampleWindowInSec ) {
+      // still sampling
+      return;
     }
+
+    var wordCntTotal = _.words(nextProps.transcript).length;
+    var wordCntDelta = wordCntTotal - this.state.windowStartWordCount;
+
+    var tempo = Math.floor(wordCntDelta * 60 / elapsedTimeInSec)
+
+    this.setState({
+      windowTempo: this.state.windowTempo.concat([tempo]),
+      windowStartTime: new Date(),
+      windowStartWordCount: wordCntTotal,
+    });
+
   },
 
   render() {
     return (
       <div>
         <h2>Tempo</h2>
+        <ul className="Uli">
+        {this.state.windowTempo.map(function(value) {
+            return <li>{value}</li>
+        })}
+        </ul>
       </div>
     );
   }
