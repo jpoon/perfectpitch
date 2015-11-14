@@ -17,7 +17,7 @@ gulp.task('server', function() {
 
   // Serve index.html for all routes to leave routing up to react-router
   server.all('/*', function(req, res) {
-      res.sendFile('index.html', { root: 'build' });
+      res.sendFile('index.html', { root: config.buildDir });
   });
 
   // Start webserver if not already running

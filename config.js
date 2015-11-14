@@ -3,24 +3,21 @@
 module.exports = {
 
   'serverport': 3000,
+  'sourceDir': './src/',
+  'buildDir': './__build__/',
 
   'scripts': {
-    'src': './app/js/**/*.js',
-    'dest': './build/js/'
+    'src': './src/js/**/*.js',
+    'dest': './__build__/js/'
   },
 
   'images': {
-    'src': './app/images/**/*.{jpeg,jpg,png}',
-    'dest': './build/images/'
+    'src': './src/images/**/*.{jpeg,jpg,png}',
+    'dest': './__build__/images/'
   },
 
   'styles': {
-    'src': './app/styles/**/*.scss',
-    'dest': './build/css/'
+    'src': './src/styles/**/*.scss',
+    'dest': './__build__/css/'
   },
-
-  'sourceDir': './app/',
-
-  'buildDir': './build/'
-
 };
