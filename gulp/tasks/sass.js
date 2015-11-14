@@ -6,7 +6,7 @@ var gulpif       = require('gulp-if');
 var browserSync  = require('browser-sync');
 var autoprefixer = require('gulp-autoprefixer');
 var handleErrors = require('../util/handle-errors');
-var config       = require('../config');
+var config       = require('../../config');
 
 gulp.task('sass', function () {
 

@@ -4,7 +4,7 @@ var gulp        = require('gulp');
 var gulpif      = require('gulp-if');
 var imagemin    = require('gulp-imagemin');
 var browserSync = require('browser-sync');
-var config      = require('../config');
+var config      = require('../../config');
 
 gulp.task('imagemin', function() {
 

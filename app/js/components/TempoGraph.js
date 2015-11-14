@@ -69,7 +69,6 @@ const TempoGraph = React.createClass({
 
     var chartOptions = {
       responsive: true,
-      scaleShowVerticalLines: false,
     }
 
     return (
